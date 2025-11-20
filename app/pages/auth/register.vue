@@ -62,7 +62,7 @@ function onSubmit(payload: FormSubmitEvent<Schema>) {
       >
         <template #description>
           Уже есть аккаунт?
-          <ULink to="/login" class="text-primary font-medium">Войти</ULink>.
+          <ULink to="/auth/login" class="text-primary font-medium">Войти</ULink>.
         </template>
       </UAuthForm>
     </UPageCard>

@@ -2,7 +2,7 @@
 import * as z from 'zod'
 import type { FormSubmitEvent, AuthFormField } from '@nuxt/ui'
 
-const toast = useToast()
+const supabase = useSupabaseClient()
 
 const fields: AuthFormField[] = [
   {
@@ -30,21 +30,26 @@ const providers = [
   {
     label: 'Google',
     icon: 'i-simple-icons-google',
-    onClick: () => {
-      toast.add({ title: 'Google', description: 'Login with Google' })
-    },
+    onClick: () => {},
   },
 ]
 
 const schema = z.object({
-  email: z.email('Invalid email'),
-  password: z.string('Password is required').min(8, 'Must be at least 8 characters'),
+  email: z.email('Неверный email'),
+  password: z.string('Пароль обязателен').min(8, 'Пароль должен быть не менее 8 символов'),
 })
 
 type Schema = z.output<typeof schema>
 
 function onSubmit(payload: FormSubmitEvent<Schema>) {
   console.log('Submitted', payload)
+
+  supabase.auth.signInWithOtp({
+    email: payload.data.email,
+    options: {
+      emailRedirectTo: 'http://localhost:3000/auth/confirm',
+    },
+  })
 }
 </script>
 
@@ -61,7 +66,7 @@ function onSubmit(payload: FormSubmitEvent<Schema>) {
       >
         <template #description>
           Нет аккаунта?
-          <ULink to="/register" class="text-primary font-medium">Создать аккаунт</ULink>.
+          <ULink to="/auth/register" class="text-primary font-medium">Создать аккаунт</ULink>.
         </template>
         <template #password-hint>
           <ULink to="#" class="text-primary font-medium" tabindex="-1">Забыли пароль?</ULink>
