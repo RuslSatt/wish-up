@@ -9,13 +9,21 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "test": "vitest"
   },
   "dependencies": {
-    "@nuxt/eslint": "^1.10.0",
     "nuxt": "^4.2.1",
     "vue": "^3.5.24",
-    "vue-router": "^4.6.3",
-    "prettier": "^3.6.2"
+    "vue-router": "^4.6.3"
+  },
+  "devDependencies": {
+    "@nuxt/eslint": "^1.10.0",
+    "@nuxt/test-utils": "^3.20.1",
+    "@vue/test-utils": "^2.4.6",
+    "happy-dom": "^20.0.10",
+    "playwright-core": "^1.56.1",
+    "prettier": "^3.6.2",
+    "vitest": "^4.0.12"
   }
 }
