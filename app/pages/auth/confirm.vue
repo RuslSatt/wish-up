@@ -45,7 +45,7 @@ async function onSubmit(payload: FormSubmitEvent<Schema>) {
   }
 
   if (data?.user) {
-    navigateTo('/')
+    navigateTo('/profile')
   }
 }
 </script>
