@@ -28,16 +28,22 @@ onMounted(() => {
   }
 })
 
+const isLoading = ref<boolean>(false)
+
 async function onSubmit(payload: FormSubmitEvent<Schema>) {
   if (!email.value) {
     return
   }
+
+  isLoading.value = true
 
   const { data, error } = await supabase.auth.verifyOtp({
     email: email.value,
     token: payload.data.code.join(''),
     type: 'email',
   })
+
+  isLoading.value = false
 
   if (error) {
     console.error('Ошибка подтверждения:', error)
@@ -55,6 +61,7 @@ async function onSubmit(payload: FormSubmitEvent<Schema>) {
     <UPageCard class="w-full max-w-md">
       <UAuthForm
         :fields="fields"
+        :loading="isLoading"
         title="Подтвердите вход"
         description="Введите 6-значный код, отправленный на ваш email"
         icon="i-lucide-shield-check"

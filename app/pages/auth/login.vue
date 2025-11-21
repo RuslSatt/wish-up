@@ -23,15 +23,21 @@ const schema = z.object({
   email: z.email('Неверный email'),
 })
 
+const isLoading = ref<boolean>(false)
+
 type Schema = z.output<typeof schema>
 
 async function onSubmit(payload: FormSubmitEvent<Schema>) {
+  isLoading.value = true
+
   const { data, error } = await supabase.auth.signInWithOtp({
     email: payload.data.email,
     options: {
       emailRedirectTo: 'http://localhost:3000/auth/confirm',
     },
   })
+
+  isLoading.value = false
 
   if (error) return
 
@@ -50,6 +56,7 @@ async function onSubmit(payload: FormSubmitEvent<Schema>) {
       <UAuthForm
         :schema="schema"
         :fields="fields"
+        :loading="isLoading"
         title="Добро пожаловать обратно!"
         icon="i-lucide-lock"
         @submit="onSubmit"
