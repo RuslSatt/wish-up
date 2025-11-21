@@ -13,43 +13,34 @@ const fields: AuthFormField[] = [
     required: true,
   },
   {
-    name: 'password',
-    label: 'Пароль',
-    type: 'password',
-    placeholder: 'Введите ваш пароль',
-    required: true,
-  },
-  {
     name: 'remember',
     label: 'Запомнить меня',
     type: 'checkbox',
   },
 ]
 
-const providers = [
-  {
-    label: 'Google',
-    icon: 'i-simple-icons-google',
-    onClick: () => {},
-  },
-]
-
 const schema = z.object({
   email: z.email('Неверный email'),
-  password: z.string('Пароль обязателен').min(8, 'Пароль должен быть не менее 8 символов'),
 })
 
 type Schema = z.output<typeof schema>
 
-function onSubmit(payload: FormSubmitEvent<Schema>) {
-  console.log('Submitted', payload)
-
-  supabase.auth.signInWithOtp({
+async function onSubmit(payload: FormSubmitEvent<Schema>) {
+  const { data, error } = await supabase.auth.signInWithOtp({
     email: payload.data.email,
     options: {
       emailRedirectTo: 'http://localhost:3000/auth/confirm',
     },
   })
+
+  if (error) return
+
+  if (data) {
+    navigateTo({
+      path: '/auth/confirm',
+      query: { email: payload.data.email },
+    })
+  }
 }
 </script>
 
@@ -59,18 +50,10 @@ function onSubmit(payload: FormSubmitEvent<Schema>) {
       <UAuthForm
         :schema="schema"
         :fields="fields"
-        :providers="providers"
         title="Добро пожаловать обратно!"
         icon="i-lucide-lock"
         @submit="onSubmit"
       >
-        <template #description>
-          Нет аккаунта?
-          <ULink to="/auth/register" class="text-primary font-medium">Создать аккаунт</ULink>.
-        </template>
-        <template #password-hint>
-          <ULink to="#" class="text-primary font-medium" tabindex="-1">Забыли пароль?</ULink>
-        </template>
         <template #footer>
           Войдя в систему, вы соглашаетесь с нашими
           <ULink to="#" class="text-primary font-medium">Условиями обслуживания</ULink>.

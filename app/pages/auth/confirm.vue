@@ -1,18 +1,70 @@
 <script setup lang="ts">
-const user = useSupabaseUser()
+import type { FormSubmitEvent, AuthFormField } from '@nuxt/ui'
 
-watch(
-  user,
-  () => {
-    if (user.value) {
-      console.log('User logged in', user.value)
-      return navigateTo('/')
-    }
+const supabase = useSupabaseClient()
+const route = useRoute()
+
+const email = computed(() => {
+  return (route.query.email as string) || ''
+})
+
+const fields: AuthFormField[] = [
+  {
+    name: 'code',
+    type: 'otp',
+    label: 'Код подтверждения',
+    required: true,
+    length: 6,
   },
-  { immediate: true },
-)
+]
+
+interface Schema {
+  code: string[]
+}
+
+onMounted(() => {
+  if (!email.value) {
+    navigateTo('/auth/login')
+  }
+})
+
+async function onSubmit(payload: FormSubmitEvent<Schema>) {
+  if (!email.value) {
+    return
+  }
+
+  const { data, error } = await supabase.auth.verifyOtp({
+    email: email.value,
+    token: payload.data.code.join(''),
+    type: 'email',
+  })
+
+  if (error) {
+    console.error('Ошибка подтверждения:', error)
+    return
+  }
+
+  if (data?.user) {
+    navigateTo('/')
+  }
+}
 </script>
 
 <template>
-  <div>Waiting for login...</div>
+  <div class="flex flex-col items-center justify-center gap-4 p-4">
+    <UPageCard class="w-full max-w-md">
+      <UAuthForm
+        :fields="fields"
+        title="Подтвердите вход"
+        description="Введите 6-значный код, отправленный на ваш email"
+        icon="i-lucide-shield-check"
+        @submit="onSubmit"
+      >
+        <template #footer>
+          Не получили код?
+          <ULink to="/auth/login" class="text-primary font-medium"> Отправить повторно </ULink>
+        </template>
+      </UAuthForm>
+    </UPageCard>
+  </div>
 </template>
