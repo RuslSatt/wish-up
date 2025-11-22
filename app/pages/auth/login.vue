@@ -3,6 +3,7 @@ import * as z from 'zod'
 import type { FormSubmitEvent, AuthFormField } from '@nuxt/ui'
 
 const supabase = useSupabaseClient()
+const toast = useToast()
 
 const fields: AuthFormField[] = [
   {
@@ -24,6 +25,7 @@ const schema = z.object({
 })
 
 const isLoading = ref<boolean>(false)
+const errorMessage = ref<string>('')
 
 type Schema = z.output<typeof schema>
 
@@ -39,7 +41,13 @@ async function onSubmit(payload: FormSubmitEvent<Schema>) {
 
   isLoading.value = false
 
-  if (error) return
+  if (error) {
+    errorMessage.value = error.message
+    toast.add({ title: 'Ошибка', description: errorMessage.value, color: 'error' })
+    return
+  }
+
+  errorMessage.value = ''
 
   if (data) {
     navigateTo({

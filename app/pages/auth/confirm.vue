@@ -3,6 +3,7 @@ import type { FormSubmitEvent, AuthFormField } from '@nuxt/ui'
 
 const supabase = useSupabaseClient()
 const route = useRoute()
+const toast = useToast()
 
 const email = computed(() => {
   return (route.query.email as string) || ''
@@ -29,6 +30,7 @@ onMounted(() => {
 })
 
 const isLoading = ref<boolean>(false)
+const errorMessage = ref<string>('')
 
 async function onSubmit(payload: FormSubmitEvent<Schema>) {
   if (!email.value) {
@@ -47,6 +49,8 @@ async function onSubmit(payload: FormSubmitEvent<Schema>) {
 
   if (error) {
     console.error('Ошибка подтверждения:', error)
+    errorMessage.value = error.message
+    toast.add({ title: 'Ошибка', description: errorMessage.value, color: 'error' })
     return
   }
 
