@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import type { FormSubmitEvent, AuthFormField } from '@nuxt/ui'
 
+definePageMeta({
+  middleware: 'guest',
+})
+
 const supabase = useSupabaseClient()
 const route = useRoute()
 const toast = useToast()
