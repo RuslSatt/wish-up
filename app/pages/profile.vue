@@ -5,5 +5,8 @@ onMounted(() => {})
 </script>
 
 <template>
-  <div>Страница пользователя: {{ user?.email }}</div>
+  <div class="flex flex-col h-screen">
+    <div>Страница пользователя: {{ user?.email }}</div>
+    <NavBar />
+  </div>
 </template>
