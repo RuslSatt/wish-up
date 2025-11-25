@@ -22,9 +22,6 @@ const actions = ref([
 ])
 
 const isActive = (toolRoute: string) => {
-  if (toolRoute === 'dashboard') {
-    return route.name === 'dashboard'
-  }
   return route.name === toolRoute
 }
 
