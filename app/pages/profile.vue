@@ -1,11 +1,15 @@
 <script setup lang="ts">
 import ProfileHeader from '~/components/ProfileHeader.vue'
 import ProfileUserInfo from '~/components/ProfileUserInfo.vue'
+import ProfileWishList from '~/components/ProfileWishList.vue'
 </script>
 
 <template>
-  <div class="h-full p-2">
+  <div class="h-full flex flex-col overflow-hidden px-2">
     <ProfileHeader />
-    <ProfileUserInfo />
+    <div class="flex-1 overflow-y-auto">
+      <ProfileUserInfo />
+      <ProfileWishList />
+    </div>
   </div>
 </template>

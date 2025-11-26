@@ -1,5 +1,5 @@
 <template>
-  <header class="flex items-center w-full">
+  <header class="flex items-center w-full pt-2">
     <UButton
       class="justify-items-start"
       icon="i-lucide-arrow-left"
