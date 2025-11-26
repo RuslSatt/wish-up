@@ -11,7 +11,7 @@ const tools = ref<ToolItem[]>([
   { route: 'dashboard', icon: 'i-lucide-store' },
   { route: 'friends', icon: 'i-lucide-users' },
   { route: 'add', icon: 'i-lucide-plus' },
-  { route: 'notifications', icon: 'i-lucide-bell' },
+  { route: 'reservation', icon: 'i-lucide-bookmark' },
   { route: 'profile', icon: 'i-lucide-user' },
 ])
 

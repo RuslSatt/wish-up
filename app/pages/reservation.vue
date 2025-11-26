@@ -2,6 +2,6 @@
 
 <template>
   <div>
-    <div>Notifications...</div>
+    <div>reservation...</div>
   </div>
 </template>
