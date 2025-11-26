@@ -2,7 +2,12 @@
 const route = useRoute()
 const router = useRouter()
 
-const tools = ref([
+export interface ToolItem {
+  route: string
+  icon: string
+}
+
+const tools = ref<ToolItem[]>([
   { route: 'dashboard', icon: 'i-lucide-store' },
   { route: 'friends', icon: 'i-lucide-users' },
   { route: 'add', icon: 'i-lucide-plus' },
@@ -31,11 +36,11 @@ const navigateTo = (toolRoute: string) => {
 </script>
 
 <template>
-  <nav class="mt-auto p-4">
+  <nav class="mt-auto p-3 bg-default rounded-t-2xl">
     <ul class="flex items-center justify-around">
       <li v-for="tool in tools" :key="tool.icon">
         <UButton
-          v-if="tool.route !== 'add'"
+          v-if="tool.route !== 'add' && tool.route !== 'profile'"
           :class="{
             'text-black dark:text-white': isActive(tool.route),
             'text-gray-400 dark:text-gray-600': !isActive(tool.route),
@@ -45,8 +50,15 @@ const navigateTo = (toolRoute: string) => {
           @click="navigateTo(tool.route)"
         />
 
+        <NavBarAvatar
+          v-if="tool.route === 'profile'"
+          :is-active="isActive"
+          :navigate-to="navigateTo"
+          :tool="tool"
+        />
+
         <UDrawer v-if="tool.route === 'add'">
-          <UButton variant="outline" :icon="tool.icon" />
+          <UButton variant="outline" color="neutral" :icon="tool.icon" />
 
           <template #content>
             <div class="flex flex-col items-center justify-center h-full w-full p-2 pb-5 gap-5">
