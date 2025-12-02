@@ -12,7 +12,7 @@ const wishLists = ref<WishListItem[]>([])
 <template>
   <div class="mt-4 h-full">
     <div v-if="!wishLists?.length" class="flex items-center justify-center h-full">
-      <UButton> Создать список желаний </UButton>
+      <CreatingWishList />
     </div>
 
     <div v-if="wishLists?.length" class="grid grid-cols-2 gap-3 pb-4">
