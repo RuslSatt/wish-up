@@ -1,7 +1,18 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const store = useWishListStore()
+
+const open = ref(false)
+const name = ref<string>('')
+
+const onCreate = async () => {
+  await store.addItem({ name: name.value })
+  name.value = ''
+  open.value = false
+}
+</script>
 
 <template>
-  <UDrawer>
+  <UDrawer v-model:open="open">
     <UButton> Создать список желаний </UButton>
 
     <template #content>
@@ -10,10 +21,16 @@
           <h3 class="mt-auto text-xs">Создайте список желаний</h3>
         </div>
         <UFormField size="lg" class="w-full" label="Название">
-          <UInput class="w-full" placeholder="День рождения" />
+          <UInput v-model="name" class="w-full" placeholder="День рождения" />
         </UFormField>
         <div class="flex items-center justify-center">
-          <UButton icon="i-lucide-check" variant="outline">Сохранить</UButton>
+          <UButton
+            :loading="store.isLoading"
+            :onclick="onCreate"
+            icon="i-lucide-check"
+            variant="outline"
+            >Сохранить</UButton
+          >
         </div>
       </div>
     </template>
