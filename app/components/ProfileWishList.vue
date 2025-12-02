@@ -1,47 +1,21 @@
 <script setup lang="ts">
-const wishLists = ref([
-  {
-    id: 1,
-    title: 'День рождения',
-    giftCount: 5,
-    color: 'bg-blue-500',
-  },
-  {
-    id: 2,
-    title: 'Новый год',
-    giftCount: 8,
-    color: 'bg-red-500',
-  },
-  {
-    id: 3,
-    title: 'Рождество',
-    giftCount: 3,
-    color: 'bg-green-500',
-  },
-  {
-    id: 4,
-    title: 'День святого Валентина',
-    giftCount: 2,
-    color: 'bg-pink-500',
-  },
-  {
-    id: 5,
-    title: 'Подарки друзьям',
-    giftCount: 12,
-    color: 'bg-purple-500',
-  },
-  {
-    id: 6,
-    title: 'Семейные подарки',
-    giftCount: 7,
-    color: 'bg-orange-500',
-  },
-])
+interface WishListItem {
+  id: number
+  title: string
+  giftCount: number
+  color: string
+}
+
+const wishLists = ref<WishListItem[]>([])
 </script>
 
 <template>
-  <div class="mt-4">
-    <div class="grid grid-cols-2 gap-3 pb-4">
+  <div class="mt-4 h-full">
+    <div v-if="!wishLists?.length" class="flex items-center justify-center h-full">
+      <UButton> Создать список желаний </UButton>
+    </div>
+
+    <div v-if="wishLists?.length" class="grid grid-cols-2 gap-3 pb-4">
       <div
         v-for="wishList in wishLists"
         :key="wishList.id"

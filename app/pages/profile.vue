@@ -7,7 +7,7 @@ import ProfileWishList from '~/components/ProfileWishList.vue'
 <template>
   <div class="h-full flex flex-col overflow-hidden px-2">
     <ProfileHeader />
-    <div class="flex-1 overflow-y-auto">
+    <div class="flex-1 overflow-y-auto flex flex-col">
       <ProfileUserInfo />
       <ProfileWishList />
     </div>
